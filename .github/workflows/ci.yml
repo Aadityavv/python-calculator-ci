@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Deploy the root directory (where your index.html is)
-          path: '.'
+          path: 'templates/'
           
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
