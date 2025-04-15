@@ -1,4 +1,4 @@
-name: Python CI
+name: Python CI and Deployment
 
 on:
   push:
@@ -28,3 +28,24 @@ jobs:
 
       - name: Run Tests
         run: pytest
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Pages
+        uses: actions/configure-pages@v3
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Deploy the root directory (where your index.html is)
+          path: '.'
+          
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2

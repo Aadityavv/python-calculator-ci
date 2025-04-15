@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Calculator on Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input {
+            width: 80px;
+        }
+        select {
+            width: 50px;
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            font-size: 18px;
+            min-height: 20px;
+        }
+        .error {
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Python Calculator</h1>
+        <div class="input-group">
+            <input type="number" id="num1" placeholder="First number">
+            <select id="operation">
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">×</option>
+                <option value="divide">÷</option>
+            </select>
+            <input type="number" id="num2" placeholder="Second number">
+        </div>
+        <button onclick="calculate()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operation = document.getElementById('operation').value;
+    
+            try {
+                const res = await fetch("/calculate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ num1, num2, operation })
+                });
+    
+                const data = await res.json();
+                if (data.result !== undefined) {
+                    document.getElementById("result").textContent = `Result: ${data.result}`;
+                    document.getElementById("result").className = "";
+                } else {
+                    document.getElementById("result").textContent = `Error: ${data.error}`;
+                    document.getElementById("result").className = "error";
+                }
+            } catch (err) {
+                document.getElementById("result").textContent = "Error calling backend";
+                document.getElementById("result").className = "error";
+            }
+        }
+    </script>
+    
+</body>
+</html>
