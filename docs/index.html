@@ -1,11 +1,49 @@
-<!-- docs/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Python Calculator</title>
+  <title>Simple Calculator</title>
 </head>
 <body>
-  <h1>Welcome to Python Calculator</h1>
-  <p>This project contains calculator logic written in Python and tested with pytest.</p>
+  <h1>Simple Calculator</h1>
+  <input id="num1" type="number" placeholder="Number 1" />
+  <input id="num2" type="number" placeholder="Number 2" />
+  <button onclick="add()">+</button>
+  <button onclick="subtract()">−</button>
+  <button onclick="multiply()">×</button>
+  <button onclick="divide()">÷</button>
+  <h2 id="result"></h2>
+
+  <script>
+    function getValues() {
+      return [
+        parseFloat(document.getElementById('num1').value),
+        parseFloat(document.getElementById('num2').value)
+      ];
+    }
+
+    function add() {
+      const [a, b] = getValues();
+      document.getElementById('result').innerText = a + b;
+    }
+
+    function subtract() {
+      const [a, b] = getValues();
+      document.getElementById('result').innerText = a - b;
+    }
+
+    function multiply() {
+      const [a, b] = getValues();
+      document.getElementById('result').innerText = a * b;
+    }
+
+    function divide() {
+      const [a, b] = getValues();
+      if (b === 0) {
+        document.getElementById('result').innerText = 'Cannot divide by zero';
+      } else {
+        document.getElementById('result').innerText = a / b;
+      }
+    }
+  </script>
 </body>
 </html>
